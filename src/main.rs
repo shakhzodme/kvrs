@@ -43,12 +43,7 @@ fn handle_client(
         .pop_front()
         .ok_or("Failed to parse your request")?;
     let operation: Operation = if operation.eq("GET") {
-        let key = raw_lines.pop_front();
-
-        if key.is_none() {
-            return Err("Incomplete request".to_string());
-        }
-
+        let key = raw_lines.pop_front().ok_or("Incomplete request")?;
         Operation::GET { key: key.unwrap() }
     } else if operation.eq("SET") {
         let key = raw_lines.pop_front().ok_or("Incomplete request")?;
